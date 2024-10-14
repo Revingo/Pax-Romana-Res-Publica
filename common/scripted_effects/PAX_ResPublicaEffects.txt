@@ -1,0 +1,26 @@
+﻿set_co-consul_first_time = {
+	random_vassal = {
+		add_character_flag = co-consul_flag
+
+		save_scope_as = co-consul_scope
+	}
+
+	every_vassal = {
+		limit = { NOT = { has_character_flag = co-consul_flag } }
+
+		if = {
+			limit = { this.auctoritas_value > scope:co-consul_scope.auctoritas_value }
+
+			scope:co-consul_scope = {
+				remove_character_flag = co-consul_flag
+			}
+
+			add_character_flag = co-consul_flag
+		}		
+	}
+
+	set_variable = {
+		name = co-consul
+		value = scope:co-consul_scope
+	}
+}
