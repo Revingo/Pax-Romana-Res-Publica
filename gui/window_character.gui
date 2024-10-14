@@ -72,24 +72,6 @@ window = {
 				visible = "[And(CharacterWindow.ShouldShowSecondary, Not(Or(GetScriptedGui('any_co-consul_vassal_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End), GetScriptedGui('has_co-consul_liege_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End))))]"
 			}
 
-			### Main Character
-			portrait_character_view_main = {
-				datacontext = "[GetIllustration( 'character_view_bg' )]"
-				name = "tutorial_highlight_main_character_button"
-				parentanchor = bottom|left
-				position = { 0 0 }
-
-				using = Animation_Character_Window_Refresh_Short
-
-				blockoverride "portrait_opinion"
-				{
-					vassal_stance_icon = {
-						name = "vassal_stance"
-						size = { 20 20 }
-					}
-				}
-			}
-
 			## Co-Consul Vassal
 			vbox = {
 				datacontext = "[CharacterWindow.GetCharacter.MakeScope.Var('co-consul').Char]"
@@ -130,6 +112,24 @@ window = {
 							name = "vassal_stance"
 							size = { 20 20 }
 						}
+					}
+				}
+			}
+
+			### Main Character
+			portrait_character_view_main = {
+				datacontext = "[GetIllustration( 'character_view_bg' )]"
+				name = "tutorial_highlight_main_character_button"
+				parentanchor = bottom|left
+				position = { 0 0 }
+
+				using = Animation_Character_Window_Refresh_Short
+
+				blockoverride "portrait_opinion"
+				{
+					vassal_stance_icon = {
+						name = "vassal_stance"
+						size = { 20 20 }
 					}
 				}
 			}
@@ -261,7 +261,7 @@ window = {
 				vbox = {
 					name = "liege"
 					datacontext = "[CharacterWindow.GetCharacter.GetLiegeEvenWhenDead]"
-					visible = "[CharacterWindow.HasLiegeEvenWhenDead]"
+					visible = "[And(CharacterWindow.HasLiegeEvenWhenDead, Not(GetScriptedGui('has_co-consul_liege_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)))]"
 					allow_outside = yes
 
 					margin_right = 20
@@ -877,8 +877,9 @@ window = {
 							margin_top = 1
 
 							text_single = {
+								visible = "[Not(Or(GetScriptedGui('has_co-consul_liege_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End), GetScriptedGui('any_co-consul_vassal_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)))]"
 								name = "character_name"
-								raw_text = "[Character.GetUINameNotMeNoTooltip], "
+								raw_text = "[Character.GetUINameNotMeNoTooltip]"
 								margin_left = 2
 								max_width = 398
 								fontsize = 20
@@ -887,7 +888,57 @@ window = {
 								default_format = "#medium"
 								tooltip = "[Character.GetUINameNotMeNoTooltip]"
 							}
-
+							hbox = {
+								name = "character_name_consul_vassal"
+								visible = "[GetScriptedGui('any_co-consul_vassal_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
+								text_single = {
+									raw_text = "Consul [Character.GetFirstNameNoTooltip]"
+									margin_left = 2
+									max_width = 398
+									fontsize = 20
+									fontsize_min = 14
+									align = nobaseline
+									default_format = "#high"
+									
+								}
+								text_single = {
+									raw_text = " of [Character.GetPrimaryTitle.GetBaseNameNoTierNoTooltip]"
+									margin_left = 2
+									max_width = 398
+									fontsize = 20
+									fontsize_min = 14
+									align = nobaseline
+									default_format = "medium"
+									
+								}
+								tooltip = "Consul [Character.GetFirstNameNoTooltip] of [Character.GetPrimaryTitle.GetBaseNameNoTierNoTooltip]"
+							}
+							hbox = {
+								name = "character_name_consul_liege"
+								visible = "[GetScriptedGui('has_co-consul_liege_scripted_gui').IsShown( GuiScope.SetRoot( CharacterWindow.GetCharacter.MakeScope ).End)]"
+								text_single = {
+									raw_text = "Consul [Character.GetFirstNameNoTooltip]"
+									margin_left = 2
+									max_width = 398
+									fontsize = 20
+									fontsize_min = 14
+									align = nobaseline
+									default_format = "#high"
+									
+								}
+								text_single = {
+									raw_text = " of [Character.GetLiege.GetPrimaryTitle.GetBaseNameNoTierNoTooltip]"
+									margin_left = 2
+									max_width = 398
+									fontsize = 20
+									fontsize_min = 14
+									align = nobaseline
+									default_format = "medium"
+									
+								}
+								tooltip = "Consul [Character.GetFirstNameNoTooltip] of [Character.GetLiege.GetPrimaryTitle.GetBaseNameNoTierNoTooltip]"
+							}
+				
 							text_single = {
 								name = "character_age"
 								raw_text = " [Character.GetAge]"
